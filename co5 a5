@@ -1,0 +1,70 @@
+#A5
+positive = ['good', 'clean', 'fast', 'helpful']
+negative = ['bad', 'dirty', 'slow', 'smoke']
+negators = ['not', 'never', 'no']
+
+def sentiment(text):
+    words = text.lower().replace('.', '').split()
+    score = 0
+
+    for i, w in enumerate(words):
+        if w in positive:
+            v = 1
+        elif w in negative:
+            v = -1
+        else:
+            v = 0
+
+        if i > 0 and words[i-1] in negators:
+            v = -v
+
+        score += v
+
+    if score > 0:
+        return "Positive"
+    elif score < 0:
+        return "Negative"
+    return "Neutral"
+
+complaints = [
+    "Roads are clean and buses are fast.",
+    "Air quality is bad.",
+    "Staff are not helpful.",
+    "Service is good."
+]
+
+for c in complaints:
+    print(sentiment(c), "|", c)
+
+complaints = [
+    "Roads are dirty.",
+    "Air is bad.",
+    "Roads are clean.",
+    "Roads are dirty."
+]
+
+count = {}
+
+for c in complaints:
+    for w in c.lower().replace('.', '').split():
+        count[w] = count.get(w, 0) + 1
+
+word = max(count, key=count.get)
+
+print("Most important word:", word)
+
+for c in complaints:
+    if word in c.lower():
+        print("Summary:", c)
+        break
+
+question = input("Ask your question: ").lower()
+
+if "pm2.5" in question:
+    print("PM2.5 in Adyar is 48")
+elif "highest" in question:
+    print("Guindy has the highest pollution")
+elif "average" in question:
+    print("Average PM2.5 is 54")
+else:
+    print("Sorry, question not understood")    
